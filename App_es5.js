@@ -1,5 +1,6 @@
 // Product Constructor
-function Product(name, price, year) {
+function Product(code, name, price, year) {
+    this.code;
     this.name = name;
     this.price = price;
     this.year = year; 
@@ -12,6 +13,7 @@ UI.prototype.addProduct = function(product) {
     const productList = document.getElementById('product-list');
     const row = document.createElement('div');
     row.innerHTML = `
+    	${product.code}
         ${product.name}
         ${product.price}
         ${product.year}
@@ -49,18 +51,19 @@ UI.prototype.deleteProduct = function(element) {
 document.getElementById('product-form')
     .addEventListener('submit', function (e) {
 
-        const name = document.getElementById('name').value,
+        const code = document.getElementById('code').value,
+        	name = document.getElementById('name').value,
             price = document.getElementById('price').value,
             year = document.getElementById('year').value;
         
         // Create a new Oject Product
-        const product = new Product(name, price, year);
+        const product = new Product(code, name, price, year);
 
         // Create a new UI
         const ui = new UI();
 
         // Input User Validation
-        if(name === '' || price === '' || year === '') {
+        if(code === '' || name === '' || price === '' || year === '') {
             ui.showMessage('Please Insert data in all fields', 'danger');
         }
 

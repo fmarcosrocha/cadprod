@@ -1,6 +1,7 @@
 // Product Constructor
 class Product {
-    constructor(name, price, year) {
+    constructor(code, name, price, year) {
+		this.code = code;
         this.name = name;
         this.price = price;
         this.year = year;
@@ -15,6 +16,7 @@ class UI {
         element.innerHTML = `
             <div class="card text-center mb-4">
                 <div class="card-body">
+                	<strong>Código</strong>: ${product.code} -
                     <strong>Produto</strong>: ${product.name} -
                     <strong>Preço</strong>: ${product.price} - 
                     <strong>Ano</strong>: ${product.year}
@@ -56,18 +58,20 @@ class UI {
 document.getElementById('product-form')
     .addEventListener('submit', function (e) {
 
-        const name = document.getElementById('name').value,
+        const code = document.getElementById('code').value,
+        	name = document.getElementById('name').value,
             price = document.getElementById('price').value,
             year = document.getElementById('year').value;
+            
 
         // Create a new Oject Product
-        const product = new Product(name, price, year);
+        const product = new Product(code, name, price, year);
 
         // Create a new UI
         const ui = new UI();
 
         // Input User Validation
-        if (name === '' || price === '' || year === '') {
+        if (code === '' || name === '' || price === '' || year === '') {
             ui.showMessage('Por favor, insira os dados nos campos.', 'danger');
         }
 
