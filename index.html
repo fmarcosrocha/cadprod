@@ -21,17 +21,14 @@ body {
 }
 </style>
 
-<script src="https://code.jquery.com/jquery-1.8.1.js"
-	type="text/javascript"></script>
-
-
+<script src="jquery-3.6.1.min.js"></script>
 
 </head>
 
 <body>
 	<!-- Navigation -->
 	<nav class="navbar navbar-light bg-warning">
-		<a class="navbar-brand" href="#">App Cad Produtos - Estoque Local</a>
+		<a class="navbar-brand" href="#">App Caixa - Mercadinho</a>
 	</nav>
 
 
@@ -45,22 +42,22 @@ body {
 					</div>
 					<form id="product-form" class="card-body">
 						<div class="form-group">
-							<input type="text" id="code" placeholder="Código"
+							Código: <input type="text" id="code" placeholder="Código"
 								class="form-control">
 						</div>
 						<div class="form-group">
-							<input type="text" id="name" placeholder="Nome do Produto"
+							Nome: <input type="text" id="name" placeholder="Nome do Produto"
 								class="form-control">
 						</div>
 						<div class="form-group">
-							<input type="number" id="price" step="0.01"
+							Preço: <input type="number" id="price" step="0.01"
 								placeholder="Preço do Produto" class="form-control">
 						</div>
 						<div class="form-group">
-							<input type="number" id="year" min="1900" max="2099" step="1"
-								value="2022" class="form-control">
+							Validade: <input type="number" id="year" min="1900" max="2099"
+								step="1" value="2022" class="form-control">
 						</div>
-						<input type="submit" value="Cadastrar"
+						<input type="submit" value="Registrar"
 							class="btn btn-primary btn-block">
 					</form>
 				</div>
@@ -84,25 +81,86 @@ body {
 					</form>
 				</div>
 			</div>
-			<div id="product-list" class="col-md-8"></div>
+			<div id="product-all" class="col-md-8"></div>
 		</div>
-		<div id="appMessage"></div>
+		<div id="appMessage">
+			<form id="pesquisa-todos-form" class="card-body">
+				<input type="submit" value="Pesquisar Todos"
+					class="btn btn-primary btn-block">
+			</form>
+		</div>
 	</div>
 
-	<script type="text/javascript">
-	
-		$(document)
-				.ready(
-						function() {
-							$
-									.get(
-											"https://serverprod-fmarcosrocha.sa-east-1.elasticbeanstalk.com/caixa/produtos",
-											function(data) {
-												console.log(data);
-											});
-						});
-	</script>
 
+	<script type="text/javascript">
+		$("#product-form")
+		.submit(
+				function(event) {
+					
+					var codigo = $("#code").val();
+					var codigo2 = '' + codigo;
+					
+					var nome = $("#name").val();
+					var nome2 = '' + nome;
+					
+					var preco = $("#price").val();
+					var preco2 = '' + preco;
+					
+					var ano = $("#year").val();
+					var ano2 = '' + ano;
+					
+					
+					$
+							.ajax(
+									{
+										url : "http://serverprod-fmarcosrocha.sa-east-1.elasticbeanstalk.com/caixa/produtos/adicionar/"+"{'codigo':'"+codigo2+"','nome':'"+nome2+"','preco':'"+preco2+"','ano':'"+ano2+"'}"
+								}).then(function(data) {
+							});
+					event.preventDefault();
+				});
+	
+		$("#pesquisa-form")
+				.submit(
+						function(event) {
+							var id = $("#prod_id").val();
+							var id2 = '' + id;
+
+							$
+									.ajax(
+											{
+												//url : "http://serverprod-fmarcosrocha.sa-east-1.elasticbeanstalk.com/caixa/produtos/"
+												url : "http://serverprod-fmarcosrocha.sa-east-1.elasticbeanstalk.com/caixa/produtos/"
+														+ id2
+											}).then(function(data) {
+										$('#code').val(data.codigo);
+										$('#name').val(data.nome);
+										$('#price').val(data.preco);
+										$('#year').val(data.ano);
+									});
+							event.preventDefault();
+						});
+		
+		$("#pesquisa-todos-form")
+		.submit(
+				function(event) {
+					$
+							.ajax(
+									{
+										//url : "http://serverprod-fmarcosrocha.sa-east-1.elasticbeanstalk.com/caixa/produtos"
+										url : "http://serverprod-fmarcosrocha.sa-east-1.elasticbeanstalk.com/caixa/produtos"
+									}).then(function(data) {
+										$("#product-all").html('');
+										for (var i = 0; i < data.length; i++) {
+										   const product = new Product2(data[i].id, data[i].codigo, data[i].nome, data[i].preco, data[i].ano);
+										   const ui = new UI();
+										   ui.addProduct2(product);
+										}
+										
+										
+							});
+					event.preventDefault();
+				});
+	</script>
 
 	<script src="App.js"></script>
 </body>

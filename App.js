@@ -8,6 +8,16 @@ class Product {
     }
 }
 
+class Product2 {
+    constructor(id, code, name, price, year) {
+		this.id = id;
+		this.code = code;
+        this.name = name;
+        this.price = price;
+        this.year = year;
+    }
+}
+
 // UI Constructor
 class UI {
     addProduct(product) {
@@ -26,9 +36,30 @@ class UI {
         `;
         productList.appendChild(element);
     }
+    
+    addProduct2(product) {
+        const productList = document.getElementById('product-all');
+        const element = document.createElement('div');
+        element.innerHTML = `
+            <div class="card text-center mb-4">
+                <div class="card-body">
+                	<strong>ID</strong>: ${product.id} -
+                	<strong>Código</strong>: ${product.code} -
+                    <strong>Produto</strong>: ${product.name} -
+                    <strong>Preço</strong>: ${product.price} - 
+                    <strong>Ano</strong>: ${product.year}
+                </div>
+            </div>
+        `;
+        productList.appendChild(element);
+    }
 
     resetForm() {
         document.getElementById('product-form').reset();
+    }
+    
+    resetForm2() {
+        document.getElementById('product-all').reset();
     }
 
     deleteProduct(element) {
